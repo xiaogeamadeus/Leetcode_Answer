@@ -10,3 +10,73 @@ Do not allocate extra space for another array. You must do this by modifying the
 一个指针负责定位，另一个负责删除。两个同时从0开始。但问题是不知道如何完成删除操作，理论上来说应当把重复值换到后面。
 三指针行不行？末尾放一个，专门用于与被删除值进行交换？好像有机会，写出来看看。
 写了一半发现思路不对，交换过来的尾部数值是错误的，这时候突然想明白了，自己想复杂了，简单的双指针即可完成任务。
+写出了第一版自己的代码，出错，正在寻找错误原因。
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        left = 0
+        right = 1
+        while right <= len(nums):
+            if nums[left] != nums[right]:
+                left += 1
+                nums[left] = nums[right]
+                right += 1
+            else:
+                right += 1
+        return left
+错误原因：if那一行，index is out of range，查了一下应该是范围出问题了。
+发现right是不能等于len(nums)的，因为数组是从0到len(nums)-1
+同时，return这一行不能return left，应该是return left + 1，原因很简单，left是k - 1，因为他是从0开始的。
+自己独立解决，出的答案：
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        left = 0
+        right = 0
+        while right < len(nums):
+            if nums[left] == nums[right]:
+                right += 1
+            else:
+                left += 1
+                nums[left] = nums[right]
+                right += 1
+        return left + 1
+执行用时：44 ms, 在所有 Python3 提交中击败了41.10%的用户
+内存消耗：15.6 MB, 在所有 Python3 提交中击败了48.58%的用户
+这一版速度并不理想，同时还有一个问题，如果数组中没有值怎么办？需要加一个判断条件。
+看一下最快速的代码。
+class Solution:
+    def removeDuplicates(self, nums):
+    # def removeDuplicates(self, nums: List[int]) -> int:
+        length = len(nums)
+        if length < 2:
+            return length
+        i = 0
+        j = 1
+        while j < length:
+            if nums[i] != nums[j]:
+                nums[i+1] = nums[j]
+                i += 1
+            j += 1
+        return i+1
+test_list = []
+print(test_list[:Solution().removeDuplicates(test_list)])
+他这个就考虑到了length < 2的情况，准备修改一下我的代码。
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        n = len(nums)
+        if n < 2:
+            return n 
+        left = 0
+        right = 0
+        while right < n:
+            if nums[left] == nums[right]:
+                right += 1
+            else:
+                left += 1
+                nums[left] = nums[right]
+                right += 1
+        return left + 1
+考虑到了不太好的情况，同时解决了这个问题之后速度大幅度提升。考虑了一下应该是这个简单的判定能够减少某些简单情况所需要的时间。
+执行用时：32 ms, 在所有 Python3 提交中击败了91.36%的用户
+内存消耗：15.5 MB, 在所有 Python3 提交中击败了65.22%的用户
+
+ 
