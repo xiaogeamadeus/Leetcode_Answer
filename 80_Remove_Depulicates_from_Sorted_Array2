@@ -58,4 +58,35 @@ class Solution {
     }
 }
 模拟题解写出自己的python代码。
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        n = len(nums)
+        if n <= 2:
+            return n
+        left = 2
+        right = 2
+        while right < n:
+            if nums[left-2] != nums[right]:
+                nums[left] = nums[right]
+                left += 1
+            right +=1
+        return left
+成功通过
+执行用时：28 ms, 在所有 Python3 提交中击败了91.43%的用户
+内存消耗：14.9 MB, 在所有 Python3 提交中击败了71.92%的用户
+速度基本满意，不寻求更优化了。
 
+看了一下时间最快代码。
+寻求的是
+看了一下时间最快代码。z
+看了一下时间最快代码
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        def solve(k):
+            u = 0
+            for x in nums:
+                if u < k or nums[u - k] != x:
+                    nums[u] = x
+                    u += 1
+            return u
+        return solve(2)
