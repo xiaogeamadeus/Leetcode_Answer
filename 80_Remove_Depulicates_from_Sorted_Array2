@@ -5,3 +5,57 @@ More formally, if there are k elements after removing the duplicates, then the f
 It does not matter what you leave beyond the first k elements. Return k after placing the final result in the first k slots of nums.
 Do not allocate extra space for another array. You must do this by modifying the input array in-place with O(1) extra memory.
 -------------------------------------------------------------------------------------
+第26题的变种。第一思路是在第26题的基础上添加一个判定，如果right-left > 2 才会交换。
+代码如下：
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        left = 0
+        right = 0
+        while right < len(nums):
+            if nums[left] == nums[right]:
+                right += 1
+            else:
+                if right - left > 2:
+                    nums[left+2] = nums[right]
+                    left += 1
+                right += 1
+        return left + 2
+大概只能通过一半左右的例子。[1,2,2]会出错。
+加个过短判定试试。
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        n = len(nums)
+        if n <= 2:
+            return n
+        left = 0
+        right = 0
+        while right < n:
+            if nums[left] == nums[right]:
+                right += 1
+            else:
+                if right - left > 2:
+                    nums[left+2] = nums[right]
+                    left += 1
+                right += 1
+        return left + 2
+还不行，问题不在这里，看起来这个思路不对，决定去看一下题解。题解的代码还蛮漂亮的，left 和 right指针从2开始。
+当然，题解是一个java代码。
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int n = nums.length;
+        if (n <= 2) {
+            return n;
+        }
+        int slow = 2, fast = 2;
+        while (fast < n) {
+            if (nums[slow - 2] != nums[fast]) {
+                nums[slow] = nums[fast];
+                ++slow;
+            }
+            ++fast;
+        }
+        return slow;
+    }
+}
+模拟题解写出自己的python代码。
+
