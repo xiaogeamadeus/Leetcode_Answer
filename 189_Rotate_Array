@@ -1,0 +1,18 @@
+Given an array, rotate the array to the right by k steps, where k is non-negative.
+---------------------------------------------------------
+第一思路，不原地，数组继续往后长，然后截取后半部分。
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        def exchange()
+        n = len(nums)
+        left = 0
+        right = 0
+        while left < n-k-1:
+            right = left + n
+            nums[right] = nums[left]
+            left += 1
+问题：题目要求原地，所以出错。
+修改，先整个exchange函数出来，然后再考虑后面。
