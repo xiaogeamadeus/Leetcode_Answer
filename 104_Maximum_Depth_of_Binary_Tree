@@ -1,0 +1,73 @@
+Given the root of a binary tree, return its maximum depth.
+A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+--------------------------------------------------------------------------------------------------
+第一思路 遍历二叉树。前序遍历+1 比大小；后序-1 返回。
+注意前序后序中序的区别
+前序；进入一个节点的时机。
+后序：即将离开一个节点的时机。
+
+class Solution {
+
+// intialize the return number "res".
+    int res = 0;
+    int depth = 0;
+    
+// Main function. 
+    public int maxDepth(TreeNode root) {
+        traverse(root);
+        return res;
+    }
+    
+// Traverse the binary tree.
+    void traverse(TreeNode root){
+        if (root == null){ 
+            return;
+        }
+// preorder traverse.
+        depth++;
+// Find the most depth from different subtrees.
+        res = Math.max(res, depth);
+        traverse(root.left);
+        traverse(root.right);
+// postorder traverse.
+        depth--;
+    }
+}
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户。
+内存消耗：41.1 MB, 在所有 Java 提交中击败了5.02%的用户。
+
+内存消耗过大，毕竟是递归算法，时间复杂度很好。
+
+tips：
+1. void的v不能大写，否则return会报错。
+2. return的返回值与该函数定义值相关，void返回空、int返回数等等。
+
+
+---------------------------------------------------------------
+第二思路 分解问题计算
+
+二叉树的深度应当等于左右子树的最大深度+1 由此进行递归。
+选用后序遍历的原因很简单，因为需要涉及到子树的信息，必须使用后序遍历。
+
+
+class Solution {
+//Main Function.
+    public int maxDepth(TreeNode root) {
+        if (root == null){
+            return 0;
+        }
+        
+        int leftmax = maxDepth(root.left);
+        int rightmax = maxDepth(root.right);
+//Postorder traverse.
+        return Math.max(leftmax, rightmax)+1;
+    }
+}
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：41 MB, 在所有 Java 提交中击败了5.92%的用户
+
+内存消耗仍然很大。
+tips：
+1. 一个函数中使用三层递归是一定会超时的，所以用 int数字 代替左右子树的结果。
