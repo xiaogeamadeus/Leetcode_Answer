@@ -1,0 +1,64 @@
+Given the root of a binary tree, return the preorder traversal of its nodes' values.
+
+---------------------------------------------------------------------------------
+解法一 简单的前序遍历所有二叉树
+
+细节不说了，注意链表的使用方法。
+
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+
+// create a linkedlist. 
+        LinkedList<Integer> res = new LinkedList<Integer> ();
+        if (root == null) {
+            return res;
+        }
+        
+// add the value of root from every subtrees.         
+        res.add(root.val);
+
+// recursive        
+        res.addAll(preorderTraversal(root.left));
+        res.addAll(preorderTraversal(root.right));
+        
+        return res;
+    }    
+}
+
+执行用时：0 ms， 在所有 Java 提交中击败了100.00%的用户
+内存消耗：39.8 MB, 在所有 Java 提交中击败了5.02%的用户
+
+Tips:
+1. 链表的初始化：LinkedList<数据类型> A = new LinkedList<数据类型>();
+2. 链表的添加：A.add() / A.addAll()
+
+------------------------------------------------------------------
+
+解法二 单独利用一个遍历函数traversal进行链表res的填写，主函数 preorderTraversal仅用于return
+
+
+class Solution {
+    LinkedList<Integer> res = new LinkedList<Integer>();
+    
+    public List<Integer> preorderTraversal(TreeNode root) {
+        Traversal(root);
+        return res;
+    }
+    void Traversal(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        res.add(root.val);
+        Traversal(root.left);
+        Traversal(root.right);
+    }
+}
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：39.5 MB, 在所有 Java 提交中击败了6.03%的用户
+
+
+一开始的思路没错，仅仅是被java语法限制住了自己。
+
+
+
+
