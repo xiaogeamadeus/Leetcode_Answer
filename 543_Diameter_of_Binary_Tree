@@ -1,0 +1,93 @@
+Given the root of a binary tree, return the length of the diameter of the tree.
+
+The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
+The length of a path between two nodes is represented by the number of edges between them.
+---------------------------------------------------------------------------
+
+解法一 分解问题计算得出答案
+最大直径应当等于每棵二叉树的 root节点 左右子树最大深度之和，先找到最大深度，然后再递归求最大直径。
+
+class Solution {
+    int maxDiameter = 0;
+    int Diameter = 0;
+
+    public int diameterOfBinaryTree(TreeNode root) {
+        traverse(root);
+        return maxDiameter;
+
+    }
+
+    void traverse(TreeNode root) {
+        if (root == null) {
+        }
+ 
+        
+        int leftdepth = maxdepth(root.left);
+        int rightdepth = maxdepth(root.right);
+
+       
+        Diameter = leftdepth + rightdepth;
+        maxDiameter = Math.max(Diameter, maxDiameter);
+        
+        traverse(root.left);
+        traverse(root.right);
+        
+    }
+
+    int maxdepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        
+        int leftmax = maxdepth(root.left);
+        int rightmax = maxdepth(root.right);
+        
+        return 1 + Math.max(leftmax, rightmax);
+    }
+}
+
+执行用时：13 ms, 在所有 Java 提交中击败了9.45%的用户
+内存消耗：41.4 MB, 在所有 Java 提交中击败了5.07%的用户
+
+可以通过，但代码耗时很长，其原因在于traverse函数前序遍历，导致无法获取子树信息，只能通过maxdepth函数获取子树信息，相当于需要进行两次遍历，最坏时间复杂度O(n^2)
+
+-------------------------------------------------------------------------
+
+解法二 与解法一思路相通，但利用后序遍历优化了代码，现在不需要再利用traverse函数进行一轮遍历，每轮maxdepth函数遍历时后序顺便更新子树信息即可。
+
+class Solution {
+    int maxDiameter = 0;
+    int Diameter = 0;
+
+    public int diameterOfBinaryTree(TreeNode root) {
+        maxdepth(root);
+        return maxDiameter;
+
+    }
+    
+    int maxdepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftdepth = maxdepth(root.left);
+        int rightdepth = maxdepth(root.right);
+
+// btw, renew the diameter of subtrees
+        Diameter = leftdepth + rightdepth;
+        maxDiameter = Math.max(Diameter, maxDiameter);
+ 
+// return the maxdepth to offer the number to recursive.
+        return 1 + Math.max(leftdepth, rightdepth); 
+
+    }
+}
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：40.9 MB, 在所有 Java 提交中击败了8.85%的用户
+
+遍历次数下降，最坏时间复杂度为O(n)，故执行时间大幅度下滑。
+
+
+
+
+
