@@ -1,0 +1,59 @@
+Given two integer arrays, preorder and postorder where preorder is the preorder traversal of a binary tree of distinct values 
+and postorder is the postorder traversal of the same tree, reconstruct and return the binary tree.
+
+If there exist multiple answers, you can return any of them.
+
+----------------------------------------------------------------------------------------
+
+
+解法： 
+与105 106类似，区别点在于无法通过preorder和postorder 确定唯一的树，但题目要求写任意一个存在的即可，那就假定都是有左子树的类型。（有可能没有左子树）
+
+class Solution {
+    public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
+        return getRoot(preorder, 0, preorder.length - 1,
+                       postorder, 0, postorder.length - 1);
+    }
+    TreeNode getRoot(int[] preorder, int preStart, int preEnd,
+                     int[] postorder, int postStart, int postEnd) {
+        if (preStart > preEnd) {
+            return null;
+        }
+        if (preStart == preEnd) {
+            return new TreeNode(preorder[preStart]); 
+        }
+
+        int rootval = preorder[preStart];
+        int index = 0;
+        int leftrootval = preorder[preStart + 1];
+
+        for (int i = postStart; i < postEnd; i++) {
+            if (postorder[i] == leftrootval) {
+                index = i;
+                break;
+            }
+        }
+
+        TreeNode root = new TreeNode(rootval);
+
+        int leftsite = index - postStart + 1;
+
+        root.left = getRoot(preorder, preStart + 1, preStart + leftsite,
+                            postorder, postStart, postStart + leftsite);
+        root.right = getRoot(preorder, preStart + leftsite + 1, preEnd, 
+                             postorder, postStart + leftsite, postEnd - 1);
+
+        return root;
+
+    }
+}
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：41.3 MB, 在所有 Java 提交中击败了5.08%的用户
+
+Tips：
+1. 别忘记写 int/return 提交前检查一遍代码。
+
+
+
+
