@@ -3,22 +3,24 @@ construct and return the binary tree.
 
 ------------------------------------------------------------------------------------------------------------------
 
-
-
-
+解法：构建二叉树，先构建root，发现root就是preorder的头，然后通过preorder的头可以在inorder中划分左子树右子树。 再递归就可以解决问题。
 
 class Solution {
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         return getRoot(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1);
     }
+    
+    
     TreeNode getRoot(int[] preorder, int prestart, int preend, int[] inorder, int instart, int inend){
         if (prestart > preend) {
             return null;
         }
 
+// Initialize root's value
         int rootval = preorder[prestart];
         int index = -1;
 
+// find the position of root from inorder array.
         for (int i = instart; i <= inend; i++) {
             if (inorder[i] == rootval) {
                 index = i;
@@ -26,20 +28,18 @@ class Solution {
             }
         }
 
-
-
-    // Construct the binary tree. 
+// Construct the binary tree. 
         TreeNode root = new TreeNode(rootval);
 
+// construct a new variable to express the length of left subtree.
         int leftsite = index - instart;
 
+// recursive
         root.left = getRoot(preorder, prestart + 1, prestart + leftsite, inorder, instart, index - 1);
         root.right = getRoot(preorder, prestart + leftsite +1, preend, inorder, index+1, inend);
 
         return root;
     }
-   
-
 }
 
 
@@ -47,6 +47,9 @@ class Solution {
 执行用时：3 ms, 在所有 Java 提交中击败了54.13%的用户
 内存消耗：40.7 MB, 在所有 Java 提交中击败了14.09%的用户
 
+Tips：
+1. 构建二叉树类型的题目完全可以套用这一套方法，找root 然后递归，注意找root的函数要写成能够被递归的形式。
+2. 函数完全可以多用几个变量，又不是不行。
 
 
 
