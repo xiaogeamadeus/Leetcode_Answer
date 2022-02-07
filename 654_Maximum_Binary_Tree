@@ -5,8 +5,48 @@ Recursively build the left subtree on the subarray prefix to the left of the max
 Recursively build the right subtree on the subarray suffix to the right of the maximum value.
 Return the maximum binary tree built from nums.
 
---------------------------------------------------------------------------------------------- 
+--------------------------------------------------------------------------------------------- 
 
+解法：此题为构建二叉树的类型。构建二叉树的题型第一步就是找到根节点。
+
+构建了一个新函数getRoot 来寻找最大值，将最大值定义为根节点，然后recursive即可。
+
+
+class Solution {
+    public TreeNode constructMaximumBinaryTree(int[] nums) {
+        return getRoot(nums, 0, nums.length - 1);
+    }
+
+    TreeNode getRoot(int[] nums, int lo, int hi) {
+        if (lo > hi) {
+            return null;
+        }
+
+        int index = -1; 
+        int maximum = -1;
+        for (int i = lo; i <= hi; i++) {
+            if (nums[i] > maximum) {
+                index = i;
+                maximum = nums[index];
+            }
+        }
+        
+
+        TreeNode root = new TreeNode(maximum);
+        root.left = getRoot(nums, lo, index - 1);
+        root.right = getRoot(nums, index + 1, hi);
+
+        return root;
+
+    }
+}
+
+执行用时：2 ms, 在所有 Java 提交中击败了91.57%的用户
+内存消耗：41.5 MB, 在所有 Java 提交中击败了5.05%的用户
+
+Tips：
+1. 别忘了把数组构建成树，返回最终应当是二叉树的形式。
+2. 考虑特殊情况，若maximum = 0的话，nums[i] = 0 则程序无法进行下去了。
 
 
 
