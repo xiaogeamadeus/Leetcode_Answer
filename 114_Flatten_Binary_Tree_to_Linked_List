@@ -1,0 +1,52 @@
+Given the root of a binary tree, flatten the tree into a "linked list":
+
+The "linked list" should use the same TreeNode class where the right child pointer points to the next node in the list and the left child pointer is always null.
+The "linked list" should be in the same order as a pre-order traversal of the binary tree.
+
+----------------------------------------------------------------------------------------------------------------
+
+解法：分解子问题计算 
+老生常谈 解决二叉树问题的两种方法：1. 遍历     2. 分解子问题
+不能遍历就分解子问题。
+很明显本题简单的遍历不能解决问题，所以选择分解子问题法。
+分解子问题法的关键在于 「明确」 递归函数的定义，并且利用该定义解决问题。
+
+class Solution {
+
+//Define the flatten function means that it can flatten the Binary Tree from the root.
+    public void flatten(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        flatten(root.left);
+        flatten(root.right);
+
+//Postorder traversal.
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+
+//Put the left subtree on the right side of root, and clear the left subtree of root.  
+        root.left = null;
+        root.right = left;
+
+//Put the old right subtree of root on the last element of the right subtree of root now.
+        TreeNode p = root;
+        while (p.right != null) {
+            p = p.right;
+        }
+        p.right = right;
+    }
+}
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：40.7 MB, 在所有 Java 提交中击败了7.80%的用户
+
+Tips: 
+1. 节点的用法 ：Node x 代表一个指向x的指针
+TreeNode x代表一个二叉树的指针，有区别，因为Node的指针是普通链表，而TreeNode 的指针是二叉树。
+
+2. 所以对于一个TreeNode指针来说，要注意把新的链接在左指针还是右指针，这就是最后一行代码为p.right = right; 而不是  p = right; 的原因
+
+
+
