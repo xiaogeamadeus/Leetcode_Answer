@@ -1,0 +1,43 @@
+Given the root of a binary search tree, and an integer k, return the kth smallest value (1-indexed) of all the values of the nodes in the tree.
+
+-----------------------------------------------------------------------------------------------------
+
+解法1: 思路
+
+BST（二叉搜索树）中序遍历时，其结果保持升序。
+
+class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        traversal(root, k);
+        return res;
+    }
+    int res = 0;
+    int rank = 0;
+
+    void traversal(TreeNode root, int k) {
+        if (root == null) {
+            return;
+        }
+        traversal(root.left, k);
+
+        rank++;
+        if (k == rank) {
+            res = root.val;
+            return;
+        }
+        traversal(root.right, k);
+
+    }
+}
+
+
+执行耗时:0 ms,击败了100.00% 的Java用户
+内存消耗:40.7 MB,击败了9.63% 的Java用户
+
+最坏时间复杂度O(n)，有点太慢了。有没有办法follow up
+
+优化方式有几种，粗略记录一下。
+第一种 将BST转化为AVL，利用平衡特性做
+第二种 修改TreeNode的代码，让其附带一个site信息，纪录他的子树有多少个，这样就可以知道这个节点自己的排名，再拿这个排名进行对比即可。
+
+
