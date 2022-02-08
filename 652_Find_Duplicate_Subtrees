@@ -56,7 +56,8 @@ class Solution {
 }
 
 
-
+执行用时：20 ms, 在所有 Java 提交中击败了88.65%的用户
+内存消耗：49.1 MB, 在所有 Java 提交中击败了12.22%的用户
 
 Tips：
 1. 关于 hashset 与 hashmap，hashmap 储存的值是一对<key, value>，hashset只能储存<key> key和value之间的关系由我自己进行定义，找到key就代表找到了value，key类似于数据库的主键
