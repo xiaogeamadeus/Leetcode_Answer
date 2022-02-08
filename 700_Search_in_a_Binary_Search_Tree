@@ -1,0 +1,54 @@
+You are given the root of a binary search tree (BST) and an integer val.
+
+Find the node in the BST that the node's value equals val and return the subtree rooted with that node. If such a node does not exist, return null.
+
+-------------------------------------------------------------------------------------------------
+
+解法1:思路很简单，但是一直没想好怎么处理 “如果查询不到返回null” 的办法。
+简单的这个？：语法就可以 学到了。
+当left非空返回left，left空返回right 如果是叶节点，rightleft都是空，代表到最后也没找到，那就返回空。
+
+class Solution {
+    public TreeNode searchBST(TreeNode root, int val) {
+        if (root == null) {
+            return null;
+        }
+        if (root.val == val) {
+            return root;
+        }
+        TreeNode left = searchBST(root.left, val);
+        TreeNode right = searchBST(root.right, val);
+
+        return left != null ? left : right;
+
+    }
+}
+
+执行耗时:1 ms,击败了100.00% 的Java用户
+内存消耗:41.5 MB,击败了5.03% 的Java用户
+
+但是这个方法对于普通的二叉树也可以查找，没有体现出BST的优越性。本质穷举，时间复杂度O(N)
+
+解法2： 利用BST左大右小的性质进行迭代。
+
+class Solution {
+    public TreeNode searchBST(TreeNode root, int val) {
+        if (root == null) {
+            return null;
+        }
+        if (root.val > val) {
+            return searchBST(root.left, val);
+        }
+        if (root.val < val) {
+            return searchBST(root.right, val);
+        }
+        return root;
+
+    }
+}
+
+执行耗时:0 ms,击败了100.00% 的Java用户
+内存消耗:41.8 MB,击败了5.03% 的Java用户
+
+速度更快了。原因在于并不需要穷举，如果val小于root 就只需要迭代左子树，然后以此类推。
+
