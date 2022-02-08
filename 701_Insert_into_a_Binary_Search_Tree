@@ -1,0 +1,27 @@
+You are given the root node of a binary search tree (BST) and a value to insert into the tree. Return the root node of the BST after the insertion. 
+It is guaranteed that the new value does not exist in the original BST.
+
+Notice that there may exist multiple valid ways for the insertion, as long as the tree remains a BST after insertion. You can return any of them.
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        if (root == null) {
+            return new TreeNode(val);
+        }
+        if (root.val > val) {
+           root.left = insertIntoBST(root.left, val);
+        }
+        if (root.val < val) {
+            root.right = insertIntoBST(root.right, val);
+        }
+        return root;
+    }
+}
+
+执行耗时:0 ms,击败了100.00% 的Java用户
+内存消耗:42.1 MB,击败了6.40% 的Java用户
+
+
+没太理解 明早再研究研究
+
