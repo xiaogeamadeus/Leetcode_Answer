@@ -1,0 +1,71 @@
+Given the root of a binary tree, return all duplicate subtrees.
+
+For each kind of duplicate subtrees, you only need to return the root node of any one of them.
+
+Two trees are duplicate if they have the same structure with the same node values.
+
+--------------------------------------------------------------------------------
+
+解法：对于这个题 首先要解决两个问题。
+第一，如何让node知道自己的子树长啥样（后序遍历）
+第二，如何对比不同node的子树？
+
+对于第一个问题，可以选择利用字符串储存子树信息，很简单也很好用。
+对于第二个问题，可以将每个节点的子树都储存在哈希表当中，然后利用hashmap的特点，储存表的同时进行计数，然后这样就可以做到有重复的就输出，无重复不输出，重复两次以上只输出一次。
+
+注意：输出要用list 所以要初始化一个链表作为输出。
+
+
+
+class Solution {
+
+// initialize hash and linkedlist (to be output of main function)
+    HashMap<String, Integer> memo = new HashMap<>();
+
+    LinkedList<TreeNode> res = new LinkedList<>();
+
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        traversal(root);
+        return res;
+    }
+
+    String traversal(TreeNode root) {
+        if (root == null) {
+            return "#";
+        }
+
+        String left = traversal(root.left);
+        String right = traversal(root.right);
+
+// postorder traversal
+        String subTree = left + ',' + right + ',' + root.val;
+
+// 有key 返回key对应的value，无key，返回0
+        int freq = memo.getOrDefault(subTree, 0);
+
+// just put the duplicate subTree for one times!
+        if (freq == 1) {
+            res.add(root);
+        }
+        
+// count the number of duplicate subTree 
+        memo.put(subTree, freq + 1);
+
+        return subTree;
+    }
+}
+
+
+
+
+Tips：
+1. 关于 hashset 与 hashmap，hashmap 储存的值是一对<key, value>，hashset只能储存<key> key和value之间的关系由我自己进行定义，找到key就代表找到了value，key类似于数据库的主键
+所以 hashmap 比 hashset 能够多储存一个value的信息。
+图是二维，set是一维，所以这样
+2. 关于哈希 k：元素值，h：哈希函数，h(k)：k的哈希值，h(k)经过某种策略计算后得到元素k在底层数组中存储时的索引a
+3. 可以将二叉树的信息储存在字符串中。
+
+
+
+
+
