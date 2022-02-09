@@ -2,3 +2,39 @@ Given an integer n, return all the structurally unique BST's (binary search tree
 Return the answer in any order.
 
 -----------------------------------------------------------------------------------------------------------------
+
+解法，在96的基础上进行修改，将原先的int输出变为链表输出。总而言之这题我能看懂但不一定写的出来。问题不在思路，在于代码表达。
+
+
+class Solution {
+    public List<TreeNode> generateTrees(int n) {
+        if (n == 0) return new LinkedList<>();
+        return build(1, n);
+    }
+    List<TreeNode> build(int lo, int hi) {
+        List<TreeNode> res = new LinkedList<>();
+        if (lo > hi) {
+            res.add(null);
+            return res;
+        }
+        for(int i = lo; i <= hi; i++) {
+            List<TreeNode> leftTree = build(lo, i - 1);
+            List<TreeNode> rightTree = build(i + 1, hi);
+            for (TreeNode left: leftTree) {
+                for(TreeNode right: rightTree) {
+                    TreeNode root = new TreeNode(i);
+                    root.left = left;
+                    root.right = right;
+                    res.add(root);
+                }
+            }
+        }
+        return res;
+    }
+}
+
+
+执行耗时:1 ms,击败了98.25% 的Java用户
+内存消耗:41.9 MB,击败了6.45% 的Java用户
+
+用了三个for循环互相套，也不清楚时间复杂度会不会过高了。
