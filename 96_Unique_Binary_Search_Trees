@@ -1,3 +1,57 @@
 Given an integer n, return the number of structurally unique BST's (binary search trees) which has exactly n nodes of unique values from 1 to n.
 
  ------------------------------------------------------------------------------------------
+
+解法：动态规划。根节点可以是1-n的任意一个，只要计算两边的递归就可以了。
+
+class Solution {
+    public int numTrees(int n) {
+        //count the number of BST from 1 to n
+        return count(1, n);
+
+    }
+    int count (int lo, int hi) {
+        if (lo > hi) return 1;
+        int res = 0;
+        for (int i = lo; i <= hi; i++) {
+          int left = count(lo, i-1);
+          int right = count(i+1, hi);
+          res += left * right;
+        }
+        return res;
+    }
+}
+
+思路正确 超时了。时间复杂度非常高。动态规划的重叠子问题。解决方法：备忘录
+
+
+
+class Solution {
+    int[][] memo;
+        
+    public int numTrees(int n) {
+        //count the number of BST from 1 to n
+
+        //renew memo
+        memo = new int [n+1][n+1];
+        return count(1, n);
+    }
+    
+    int count (int lo, int hi) {
+        if (lo > hi) return 1;
+        if (memo[lo][hi] != 0) return memo[lo][hi];
+        int res = 0;
+        for (int i = lo; i <= hi; i++) {
+          int left = count(lo, i-1);
+          int right = count(i+1, hi);
+          res += left * right;
+        }
+        //store the result into the memo
+        memo[lo][hi] = res;
+        return res;
+    }
+}
+
+备忘录思路很简单，储存结果进去，然后每轮判定一次，如果结果已经在备忘录当中了，那就直接return，这样就不会走第二遍，用空间为代价大大减小了时间复杂度。
+
+
