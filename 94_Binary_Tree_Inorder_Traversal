@@ -1,0 +1,39 @@
+Given the root of a binary tree, return the inorder traversal of its nodes' values.
+
+--------------------------------------------------------------
+
+解法：没什么好说的 递归的时候记得把中序遍历的位置放上代码。
+
+class Solution {
+
+    List<Integer> res = new LinkedList<>();
+    public List<Integer> inorderTraversal(TreeNode root) {
+        traversal(root);
+        return res;
+    }
+    void traversal(TreeNode root) {
+        if (root == null) return;
+        traversal(root.left);
+        res.add(root.val);
+        traversal(root.right);
+    }
+}
+
+思路2 ：动态规划
+
+class Solution {
+    /* 动态规划思路 */
+    // 定义：输入一个节点，返回以该节点为根的二叉树的中序遍历结果
+    public List<Integer> inorderTraversal(TreeNode root) {
+        LinkedList<Integer> res = new LinkedList<>();
+        if (root == null) {
+            return res;
+        }
+        res.addAll(inorderTraversal(root.left));
+        res.add(root.val);
+        res.addAll(inorderTraversal(root.right));
+        return res;
+    }
+    
+    没看懂。
+    
