@@ -1,0 +1,59 @@
+Given the root of a binary tree, determine if it is a valid binary search tree (BST).
+
+A valid BST is defined as follows:
+
+The left subtree of a node contains only nodes with keys less than the node's key.
+The right subtree of a node contains only nodes with keys greater than the node's key.
+Both the left and right subtrees must also be binary search trees.
+------------------------------------------------------------------------------------
+
+解法1:中序遍历
+在中序判断每一个数是否符合升序，不符合就false，符合就继续。全对返回true
+
+class Solution {
+
+    long index = Long.MIN_VALUE;
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+// 如果!isV为真，执行if中的语句，如果!isV为假，不执行。换句话说isV为假，执行。
+// judge left subtree
+        if(!isValidBST(root.left)) {
+            return false;
+        }
+        // inorder traversal
+        if (index >= root.val) {
+            return false;
+        }
+        index = root.val;
+        return isValidBST(root.right);
+    }
+}
+
+执行用时: 0 ms
+内存消耗: 40.8 MB
+
+解法2：抛弃中序遍历，单纯比大小。
+
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        return IsValidBST(root, null, null);
+    }
+    boolean IsValidBST(TreeNode root, TreeNode min, TreeNode max) {
+        if (root == null) {
+            return true;
+        }
+        if (min != null && root.val <= min.val) {
+            return false;
+        }
+        if (max != null && root.val >= max.val) {
+            return false;
+        }
+        return IsValidBST(root.left, min, root)
+                && IsValidBST(root.right, root, max);
+    }
+}
+
+执行耗时:0 ms,击败了100.00% 的Java用户
+内存消耗:41.3 MB,击败了5.02% 的Java用户
