@@ -1,0 +1,55 @@
+Given a root node reference of a BST and a key, delete the node with the given key in the BST. Return the root node reference (possibly updated) of the BST.
+
+Basically, the deletion can be divided into two stages:
+
+Search for a node to remove.
+If the node is found, delete the node.
+
+--------------------------------------------------------------------------------------------------------------
+解法：删除节点有三种情况。
+第一种，该节点就是叶子，或者单独的一个根，那就直接删
+第二种，该节点有一条子树，那只要删除后把子树接上去就行了。
+第三种，该节点有两条子树，那需要找到右子树的最小值或者左子树的最大值，将这个值作为新根。
+
+class Solution {
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if (root == null) {
+            return null;
+        }
+        //第一种情况、第二种情况
+        if (root.val == key) {
+            if (root.left == null) {
+                return root.right;
+            }
+            if (root.right == null) {
+                return root.left;
+            }
+            //第三种情况
+            TreeNode minNode = getMin(root.right);
+            root.right = deleteNode(root.right, minNode.val);
+
+            minNode.left = root.left;
+            minNode.right = root.right;
+            root = minNode;
+        }
+        //没找到 比大小 往左往右
+        else if (root.val > key) {
+            root.left = deleteNode(root.left, key);
+        }
+        else if (root.val < key) {
+            root.right = deleteNode(root.right, key);
+        }
+        return root;
+
+    }
+    //找BST中最小值的函数
+    TreeNode getMin(TreeNode node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
+}
+
+执行耗时:0 ms,击败了100.00% 的Java用户
+内存消耗:41.9 MB,击败了5.02% 的Java用户
