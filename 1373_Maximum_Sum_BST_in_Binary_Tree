@@ -8,5 +8,61 @@ Both the left and right subtrees must also be binary search trees.
  
  ----------------------------------------------------------------------------------------------
  
+ 思路：明确当前节点该做什么。
+ 如果一个树的子树不是BST，那他100%不是BST
+ 然后判断左右子树+root 是不是还是BST，如果是，那还是个BST。
+ 计算BST的节点和，和最大值进行比较
  
+ 需要知道的值：
+ 左右子树是否是BST
+ 左子树最大，右子树最小
+ 左右子树的节点和。
+ 
+ 
+ 
+ class Solution {
+    int maxsum = 0;
+    public int maxSumBST(TreeNode root) {
+        traversal(root);
+        return maxsum;
+    }
+    int[] traversal(TreeNode root) {
+        if(root == null) {
+            return new int[] {1, Integer.MAX_VALUE, Integer.MIN_VALUE, 0};
+        }
+        //左子树右子树都是符合res形式的
+        int[] left = traversal(root.left);
+        int[] right = traversal(root.right);
+        // res[0]：该树是否为BST
+        // res[1]：该树的最小值
+        // res[2]：该树的最大值
+        // res[3]：该树的节点和
+        int[] res = new int[4];
+        //判断这颗子树是否是BST
+        // 左右子树是否为BST --left[0] == 1 right[0] == 1;
+        // 根节点是否比左子树最大值大，右子树最小值小
+        if(left[0] == 1 && right[0] == 1 && root.val >= left[2] && root.val < right[1]) {
+
+            res[0] = 1;
+            res[1] = Math.min(left[1], root.val);
+            res[2] = Math.max(right[2], root.val);
+            res[3] = left[3] + right[3] + root.val;
+
+            maxsum = Math.max(maxsum, res[3]);
+        }
+        else{
+            res[0] = 0;
+        }
+        return res;
+    }
+}
+
+执行耗时:7 ms,击败了57.17% 的Java用户
+内存消耗:52.8 MB,击败了11.84% 的Java用户
+
+递归的核心，弄明白前序中序后序，弄明白每个节点该做什么
+尽量避免递归调用其他的递归结果
+
+
+
  
