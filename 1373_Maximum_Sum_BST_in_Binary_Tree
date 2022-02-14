@@ -44,6 +44,7 @@ Both the left and right subtrees must also be binary search trees.
         if(left[0] == 1 && right[0] == 1 && root.val >= left[2] && root.val < right[1]) {
 
             res[0] = 1;
+            //注，之所以需要再与父节点进行比较，其原因为我们对于跟节点为空时，给最小值赋值了极大值，最大值赋值了极小值。如果不对比的话，那些空节点的父节点最大最小值也会继承。
             res[1] = Math.min(left[1], root.val);
             res[2] = Math.max(right[2], root.val);
             res[3] = left[3] + right[3] + root.val;
