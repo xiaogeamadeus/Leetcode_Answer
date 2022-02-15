@@ -1,0 +1,8 @@
+You are given the root of a binary search tree (BST), where the values of exactly two nodes of the tree were swapped by mistake. 
+Recover the tree without changing its structure.
+
+---------------------------------------------------------
+思路：
+BST的定义：左子树右子树都是BST，左子树最大值 < root.val < 右子树最小值
+中序遍历，找到错误节点，exchange，然后输出。
+
