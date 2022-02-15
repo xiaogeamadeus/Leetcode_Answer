@@ -5,4 +5,6 @@ Recover the tree without changing its structure.
 思路：
 BST的定义：左子树右子树都是BST，左子树最大值 < root.val < 右子树最小值
 中序遍历，找到错误节点，exchange，然后输出。
+不太好写 一会看看
 
+思路2：每个节点 查 自己是否是BST，然后查父节点，然后往上推 自底而上，后序遍历。
