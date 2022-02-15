@@ -1,0 +1,54 @@
+Given the roots of two binary trees p and q, write a function to check if they are the same or not.
+
+Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.
+
+---------------------------------------------------------------------------------------------
+
+前序遍历，比较，有错误返回false
+
+class Solution {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        boolean result = preorderTraversal(p, q);
+        return result;
+    }
+    boolean preorderTraversal(TreeNode p, TreeNode q){
+        if(p == null && q == null){
+            return true;
+        }
+        else if(p == null || q == null){
+            return false;
+        }
+        else if(p.val != q.val){
+            return false;
+        }
+        else
+        return preorderTraversal(p.left, q.left) && preorderTraversal(p.right, q.right);
+
+    }
+}
+
+执行耗时:0 ms,击败了100.00% 的Java用户
+内存消耗:38.7 MB,击败了13.17% 的Java用户
+
+关键在于学习别人的代码怎么写的
+
+class Solution {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        // 判断一对节点是否相同
+        if (p == null && q == null) {
+            return true;
+        }
+        if (p == null || q == null) {
+            return false;
+        }
+        if (p.val != q.val) {
+            return false;
+        }
+        // 判断其他节点是否相同
+        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+    }
+}
+
+简洁 思路清晰。
+继续努力
+
