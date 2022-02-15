@@ -2,4 +2,54 @@ Given the root of a binary tree, check whether it is a mirror of itself (i.e., s
 
 -------------------------------------------------------------------------------------------------
 
-前序遍历 每个节点判断 错误
+前序遍历 每个节点判断 思路没错 代码写错了
+如何判断两个子树是否相同？增加一个节点 增加一个函数不就行了。
+
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        return check(root.left, root.right);
+    }
+    boolean check(TreeNode l, TreeNode r) {
+        if(l == null && r == null) return true;
+        else if(l == null || r == null) return false;
+        else if(l.val != r.val) return false;
+        return check(l.right, r.left) && check(l.left, r.right);
+    }
+}
+
+执行耗时:0 ms,击败了100.00% 的Java用户
+内存消耗:39.5 MB,击败了11.95% 的Java用户
+
+类似100题，但路还很长....
+出现的问题：对于递归的理解出错，递归不是死板的左和右，之所以每次都是左和右是因为只有一个节点。当有两个节点的时候，递归的结果取决于你想针对哪个。
+本题，当你最后的递归写成（left.left, right.left）&& (left.right, right,right)的时候，代表着你进行判断的节点是 
+左子树的左节点，右子树的左节点相同与否？
+左子树的右节点，右子树的右节点相同与否？
+
+case[1223443]就会出错 [1223434]反而正确。
+应当改为 左子树的右与右子树的左相同，左子树的左与右子树的右相同。
+
+在递归判断为两个节点以上的时候 注意递归的细节。
+
+最后 本代码有瑕疵。
+对于根节点是否为空的判断应当在主函数，因为第二个函数中根本没有root的信息。
+case 少了 这代码应该通过不了的。
+继续努力
+修改 
+
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if(root == null) return true;
+        return check(root.left, root.right);
+    }
+    boolean check(TreeNode l, TreeNode r) {
+        if(l == null && r == null) return true;
+        else if(l == null || r == null) return false;
+        else if(l.val != r.val) return false;
+        return check(l.right, r.left) && check(l.left, r.right);
+    }
+}
+
+
+
+
