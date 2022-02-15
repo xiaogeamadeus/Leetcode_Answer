@@ -8,3 +8,43 @@ BST的定义：左子树右子树都是BST，左子树最大值 < root.val < 右
 不太好写 一会看看
 
 思路2：每个节点 查 自己是否是BST，然后查父节点，然后往上推 自底而上，后序遍历。
+
+思路2更难，思路1正确，但代码能力太差了
+
+
+class Solution {
+    TreeNode first = null;
+    TreeNode second = null;
+    TreeNode prev = new TreeNode(Integer.MIN_VALUE);
+    public void recoverTree(TreeNode root) {
+        traversal(root);
+        int temp = first.val;
+        first.val = second.val;
+        second.val = temp;
+    }
+    void traversal(TreeNode root) {
+        if (root == null) return;
+        traversal(root.left);
+        //inorder traversal
+        if(root.val < prev.val){
+            if(first == null){
+                first = prev;
+            }
+            second = root;
+        }
+        prev = root;
+        traversal(root.right);
+    }
+}
+
+
+执行耗时:1 ms,击败了100.00% 的Java用户
+内存消耗:41.2 MB,击败了12.39% 的Java用户
+
+多加了一个对于first是否为空的判断，就完成了对于第一个节点 第二个节点记录打架的问题，服了。
+
+Tips，题干void 不需要return
+
+
+
+
