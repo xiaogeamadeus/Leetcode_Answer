@@ -1,0 +1,5 @@
+Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).
+
+-------------------------------------------------------------------------------------------------
+
+前序遍历 每个节点判断 错误
