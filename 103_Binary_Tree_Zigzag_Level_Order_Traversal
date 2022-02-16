@@ -1,0 +1,51 @@
+Given the root of a binary tree, return the zigzag level order traversal of its nodes' values. 
+(i.e., from left to right, then right to left for the next level and alternate between).
+
+--------------------------------------------------------------------------------------------
+
+和102 类似 关键点在于怎样完成“反向”这个操作
+反向操作实现的思路非常简单，用一个布尔表达式就可以完成 每次每层for开始时判断布尔是true 还是 false 从而决定插入level的时候是从头还是从尾。
+然后在一层的for结束，每轮while的结尾用一个反向，就可以完成每层的方向不同了。
+
+
+
+class Solution {
+    List<List<Integer>> res = new LinkedList<>();
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        if(root == null) return res;
+        boolean change = true;
+
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        while(!q.isEmpty()){
+            int sz = q.size();
+            LinkedList<Integer> level = new LinkedList<>();
+            for(int i = 0; i < sz; i++){
+                TreeNode cur = q.poll();
+                if(change){
+                    level.addLast(cur.val);
+                }
+                else level.addFirst(cur.val);
+                if(cur.left != null){
+                    q.offer(cur.left);
+                }
+                if(cur.right != null){
+                    q.offer(cur.right);
+                }
+            }
+            change = !change;
+            res.add(level);
+        }
+        return res;
+    }
+}
+执行耗时:0 ms,击败了100.00% 的Java用户
+内存消耗:39.9 MB,击败了15.61% 的Java用户
+
+
+忽略的要点 
+level必须是个链表，否则无法执行addFirst()  addLast()
+利用cur这个树节点来储存队列q里那个节点的左子树右子树信息。
+
+
+
