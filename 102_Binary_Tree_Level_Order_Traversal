@@ -1,0 +1,65 @@
+Given the root of a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by level).
+
+-------------------------------------------------------------------------------------------------
+
+BFS经典题型 层序遍历。正好锻炼一下非递归的二叉树怎么写。while从上到下 for从左到右
+因为符合先进先出 可以用队列。java的队列是由链表实现的。
+Queue<> q = new LinkedList<>();
+q.poll()输出队列第一个，然后删除该值
+q.offer()队尾插入一个值
+q.size()
+q.isEmpty()
+
+
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> res = new LinkedList<>();
+        if(root == null) return res;
+
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        while (!q.isEmpty()){
+            int sz = q.size();
+
+            //level 表每轮都被更新了。
+            List<Integer> level = new LinkedList<>();
+            for(int i = 0;  i < sz ; i++){
+                TreeNode cur = q.poll();
+                level.add(cur.val);
+                if(cur.left != null){
+                    q.offer(cur.left);
+                }
+                if(cur.right != null){
+                    q.offer(cur.right);
+                }
+            }
+            res.add(level);
+        }
+        return res;
+    }
+}
+
+执行耗时:1 ms,击败了85.05% 的Java用户
+内存消耗:41.3 MB,击败了15.67% 的Java用户
+
+这道题遇到的两个最大的困难，1，如何表示出表中有表的输出，这一点题干给的东西没看懂List<List<Integer>>就可以了。
+同时，最后之所以用res.add而不是res.addAll的原因也是如此，level是List res的一个元素（虽然level本身也是一个数组）
+
+2. 在不知道树有几层的情况下，双循环怎么规划空间？
+答案 设置一个表level，每轮输入值 存完 输出 更新归零。如此反复即可。
+
+其他细节，如何一层一层把值插进去，完成层序遍历？
+对每个节点进行判断，是否有左右子节点，有就插入 没有就算了
+最后就能利用队列获得level（储存了一层的东西）
+队列利用poll 旧的东西存入level马上就会被删。
+
+真牛
+
+
+
+
+
+
+
+
+
