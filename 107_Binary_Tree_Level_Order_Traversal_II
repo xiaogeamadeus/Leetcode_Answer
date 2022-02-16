@@ -2,5 +2,43 @@ Given the root of a binary tree, return the bottom-up level order traversal of i
 
 --------------------------------------------------------------------
 思路类似103 关键是怎样输出的时候反向，从底而上。
-我的想法是单纯的给res（输出的那个表）输入的时候，用addLast的思想。
+我的想法是单纯的给res（输出的那个表）输入的时候，用addLast的思想，把res改成链表就可以实现了。
 
+class Solution {
+    LinkedList<List<Integer>> res = new LinkedList<>();
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        if(root == null) return res;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        
+        while (!q.isEmpty()){
+            int sz = q.size();
+            LinkedList<Integer> level = new LinkedList<>();
+            for(int i = 0; i < sz; i++){
+                TreeNode cur = q.poll();
+                level.add(cur.val);
+                if(cur.left != null){
+                    q.offer(cur.left);
+                }
+                if(cur.right != null){
+                    q.offer(cur.right);
+                }
+            }
+            res.addFirst(level);
+        }
+        return res;
+    }
+}
+
+执行耗时:1 ms,击败了94.81% 的Java用户
+内存消耗:41.3 MB,击败了14.92% 的Java用户
+
+基本做出来了 出现的问题 level初始化的位置，cur初始化的位置没有摆对 理解出了问题。
+level需要跟着while进行更新，因为level需要在for的外面把所有的for里面的一整行吃掉。
+cur需要跟着for更新，因为cur每次都只能等于一个点。
+
+一整行的，跟着while 一个点的 跟着for。
+我也太聪明了。
+
+
+   
