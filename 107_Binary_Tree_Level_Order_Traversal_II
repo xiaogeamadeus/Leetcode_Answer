@@ -1,3 +1,6 @@
 Given the root of a binary tree, return the bottom-up level order traversal of its nodes' values. (i.e., from left to right, level by level from leaf to root).
 
-思路
+--------------------------------------------------------------------
+思路类似103 关键是怎样输出的时候反向，从底而上。
+我的想法是单纯的给res（输出的那个表）输入的时候，用addLast的思想。
+
