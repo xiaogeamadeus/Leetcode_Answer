@@ -8,3 +8,95 @@ Clarification: The input/output format is the same as how LeetCode serializes a 
 so please be creative and come up with different approaches yourself.
 
 ---------------------------------------------------------------------------------------------------------------------
+
+本题大意就是把二叉树转化为字符串，再把字符串变回二叉树。实际上前后序遍历方式+层序遍历都可以做出本题，非常自由。中序不行，原因很简单 找不到root。
+
+前序：
+public class Codec {
+    String SEP = ",";
+    String NULL = "#";
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root){
+        StringBuilder sb = new StringBuilder();
+        serialize(root, sb);
+        return sb.toString();
+    }
+
+    void serialize(TreeNode root, StringBuilder sb){
+        if(root == null) {
+            sb.append(NULL).append(SEP);
+            return;
+        }
+        sb.append(root.val).append(SEP);
+        serialize(root.left, sb);
+        serialize(root.right, sb);
+    }
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        LinkedList nodes = new LinkedList<>();
+        for(String s : data.split(SEP)){
+            nodes.addLast(s);
+        }
+        return deserialize(nodes);
+    }
+    TreeNode deserialize(LinkedList<String> nodes){
+        if(nodes.isEmpty()) return null;
+        String first = nodes.removeFirst();
+        if(first.equals(NULL)) return null;
+        TreeNode root = new TreeNode(Integer.parseInt(first));
+        root.left = deserialize(nodes);
+        root.right = deserialize(nodes);
+        return root;
+    }
+}
+执行耗时:7 ms,击败了96.47% 的Java用户
+内存消耗:43 MB,击败了17.38% 的Java用户
+------------------------------------------------------------------------------
+后序
+
+public class Codec {
+    String SEP = ",";
+    String NULL = "#";
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root){
+        StringBuilder sb = new StringBuilder();
+        serialize(root, sb);
+        return sb.toString();
+    }
+
+    void serialize(TreeNode root, StringBuilder sb){
+        if(root == null) {
+            sb.append(NULL).append(SEP);
+            return;
+        }
+        serialize(root.left, sb);
+        serialize(root.right, sb);
+        sb.append(root.val).append(SEP);
+    }
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        LinkedList nodes = new LinkedList<>();
+        for(String s : data.split(SEP)){
+            nodes.addLast(s);
+        }
+        return deserialize(nodes);
+    }
+    TreeNode deserialize(LinkedList<String> nodes){
+        if(nodes.isEmpty()) return null;
+        String last = nodes.removeLast();
+        if(last.equals(NULL)) return null;
+        TreeNode root = new TreeNode(Integer.parseInt(last));
+        root.right = deserialize(nodes);
+        root.left = deserialize(nodes);
+        return root;
+    }
+}			
+
+执行耗时:8 ms,击败了87.92% 的Java用户
+内存消耗:43.4 MB,击败了11.11% 的Java用户
+
+在形成字符串的时候使用了后序，但在回到树的时候怎么办呢？其实很简单，只要把left和right对掉，first和last对换就好了。
+left right对掉是为了形成后序。
+--------------------------------------------------------------------------------------
+层序
+略
