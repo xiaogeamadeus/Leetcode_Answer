@@ -1,0 +1,21 @@
+Start from integer 1, remove any integer that contains 9 such as 9, 19, 29...
+
+Now, you will have a new integer sequence [1, 2, 3, 4, 5, 6, 7, 8, 10, 11, ...].
+
+Given an integer n, return the nth (1-indexed) integer in the new sequence.
+------------------------------------------------------------
+非常tricky的一道hard，本质在于去掉所有9 找第n个数的时候，去掉所有9存在的数组其实变成了一个九进制数组。那样的话就变成了求出九进制数组的第n个值。
+
+
+class Solution {
+    public int newInteger(int n) {
+        int result = 0;
+        int times = 1;
+        while(n != 0){
+            result += n % 9 * times;
+            times *= 10;
+            n = n / 9;
+        }
+        return result;
+    }
+}
