@@ -1,0 +1,37 @@
+Given the heads of two singly linked-lists headA and headB, return the node at which the two lists intersect. 
+If the two linked lists have no intersection at all, return null.
+
+For example, the following two linked lists begin to intersect at node c1:
+
+The test cases are generated such that there are no cycles anywhere in the entire linked structure.
+
+Note that the linked lists must retain their original structure after the function returns.
+
+Custom Judge:
+
+The inputs to the judge are given as follows (your program is not given these inputs):
+
+intersectVal - The value of the node where the intersection occurs. This is 0 if there is no intersected node.
+listA - The first linked list.
+listB - The second linked list.
+skipA - The number of nodes to skip ahead in listA (starting from the head) to get to the intersected node.
+skipB - The number of nodes to skip ahead in listB (starting from the head) to get to the intersected node.
+The judge will then create the linked structure based on these inputs and pass the two heads, headA and headB to your program. If you correctly return the intersected node, then your solution will be accepted.
+
+--------------------------------------------------------------------------
+虽然headA headB到相交节点的距离我们不知道，所以没有办法同时用两个指针找相等。
+可以有两个思路。思路1，用哈希表，每走一个节点查一次，知道找到第一个重复的为止。但这种方法需要额外空间，倒是时间复杂度会少一点。
+第二个思路就是用两个指针。第一个指针先遍历A 再遍历B。第二个指针先遍历B，再遍历A，这样我们会发现这两个指针会恰好同步走到那个相交的节点。当然，如果headAB不存在相交的节点时，相当于返回的是空节点。
+
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode p1 = headA, p2 = headB;
+        while (p1 != p2){
+            if(p1 == null) p1 = headB;
+            else p1 = p1.next;
+            if(p2 == null) p2 = headA;
+            else p2 = p2.next;
+        }
+        return p1;
+    }
+}
