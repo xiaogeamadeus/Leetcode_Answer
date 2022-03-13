@@ -35,3 +35,5 @@ public class Solution {
         return p1;
     }
 }
+
+这个题甚至还有第三个解法。当我们把相交链表的headA的尾巴与headB的头相连的时候，这个题就变成了之前所看的「寻找起点」的问题。
