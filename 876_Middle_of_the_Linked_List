@@ -1,0 +1,24 @@
+Given the head of a singly linked list, return the middle node of the linked list.
+
+If there are two middle nodes, return the second middle node.
+
+------------------------------------------------------
+
+我们无法直接得到链表的中点，遍历一遍再找时间有些复杂。
+继续考虑双指针，可以用很简单的快慢指针来实现。p1走一步 p2走两步就行了。这样p2走到尾巴的时候p1就是中点。
+
+
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+}
+
+注：出现的问题，首先没必要使用虚拟头节点，原因很简单，因为不会出现空间不够用的情况。其次循环一定要保证fast.next和fast本身都不是null 这样才能做到对于他们取next
+你没法对一个null节点取next。
