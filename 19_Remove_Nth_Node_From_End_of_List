@@ -1,6 +1,36 @@
 Given the head of a linked list, remove the nth node from the end of the list and return its head.
 
 -----------------------------------------------------------------------------------------------
+思路：
+由于我们不知道链表的长度，我们可以遍历一遍链表，然后得到长度之后，从n-k开始数链表就可以了。
+但这样子总共需要遍历两次，并不是很合理的选择。
 
+更好的方法：双指针。首先第一个指针p1指到第k个，然后把p2指针指向头节点，然后p1p2共同移动。p1到达链表结尾的时候，p2就是我们要求的值。
+这样只需要遍历一次数组就能获得我们想要的值了。
 
+然后删除即可。
+
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode x = findFromEnd(dummy, n+1);
+        // delete the listnode.
+        x.next = x.next.next;
+        return dummy.next;
+    }
+
+    private ListNode findFromEnd(ListNode head, int k){
+        ListNode p1 = head;
+        for(int i = 0; i < k; i++){
+            p1 = p1.next;
+        }
+        ListNode p2 = head;
+        while(p1 != null){
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+        return p2;
+    }
+}
 
