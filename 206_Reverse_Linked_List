@@ -1,0 +1,24 @@
+Given the head of a singly linked list, reverse the list, and return the reversed list.
+
+------------------------------------------------------------------
+
+不要跳进递归 不要跳进递归 不要跳进递归！！！
+
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if(head == null || head.next == null) return head;
+        ListNode last = reverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return last;
+    }
+}
+
+这个代码 如果跳到递归里面想就完蛋， 很容易陷进去啥也想不出来。但如果你直接默认reverseList(head.next)就能提供正确的结果的话，那其实就很好理解了。
+你把last指向了reverseList(head.next)的头节点（也就是原链表的尾节点），然后就会发现那个链表 后面的全指向第二个，原来的 头节点也指向第二个。
+这时候head.next.next = head存在的意义就是帮助你把最后一个节点错误的顺序颠倒过来。head.next是原来的第二个节点，对他求next然后赋值给head就能够成功反向。
+
+当然，原先的头节点这时作为尾节点，我们需要帮助他将他的next赋值为null。
+如果每一个递归都能完成上述的任务，一直到最后一个孤独的尾节点，这时候if判断语句就可以直接return了
+就这么简单。
+
