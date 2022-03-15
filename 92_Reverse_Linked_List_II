@@ -1,0 +1,40 @@
+Given the head of a singly linked list and two integers left and right where left <= right,
+reverse the nodes of the list from position left to position right, and return the reversed list.
+
+-------------------------------------------------------
+
+找到递归的base case，通过递归不断逼近base case
+写在前面：递归解法时间复杂度虽然和迭代解法一致，但空间复杂度为O(n)，迭代解法空间复杂度为O(1)，所以实际上还是选择迭代来解决。
+
+递归的思路：首先将反转整个链表 变成反转一个链表的前N个节点。
+这样的区别在于我们需要给反转链表的操作进行刹车。递归的理解非常简单，我们可以做一个reverseN的函数，当n==1的时候，代表你只需要反转第一个节点就行，记录下后驱节点返回head就行。
+当n>1的时候，还是一样的思路 递归，不要跳进递归，而是想一下下一个case是什么样的。
+
+
+class Solution {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if (left == 1){
+            return reverseN(head, right);
+        }
+        head.next = reverseBetween(head.next, left-1, right-1);
+        return head;
+
+    }
+    
+    
+    ListNode successor = null;
+    private ListNode reverseN(ListNode head, int n){
+        if (n == 1){
+            successor = head.next;
+            return head;
+        }
+
+        ListNode last = reverseN(head.next, n - 1);
+        // 转向每一个节点
+        head.next.next = head;
+        // 将现在的尾节点head与n+1项节点相连（successor）
+        head.next = successor;
+        return last;
+    }
+
+}
