@@ -1,0 +1,43 @@
+Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value.
+
+If target is not found in the array, return [-1, -1].
+
+You must write an algorithm with O(log n) runtime complexity.
+
+------------------------------------------------------------
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] res = new int[2];
+        res[0] = -1;
+        res[1] = -1;
+        if(nums.length == 0) return res;
+        if (target > nums[nums.length - 1] || target < nums[0]) return res;
+
+        int lo, hi;
+        lo = 0;
+        hi = nums.length - 1;
+
+        while (lo <= hi) {
+            int mid = lo + ((hi - lo) >> 1);
+            if (nums[mid] == target) {
+                res[0] = mid;
+                res[1] = mid;
+                while (res[1] < hi) {
+                    if (nums[res[1] + 1] == target) res[1]++;
+                    else break;
+                }
+                while (res[0] > lo) {
+                    if (nums[res[0] - 1] == target) res[0]--;
+                    else break;
+                }
+                break;
+            }
+            else if (nums[mid] > target) hi = mid - 1;
+            else lo = mid + 1;
+        }
+        return res;
+    }
+}
+
+注意数组的范围，在里面写的时候也要注意数组的范围。
