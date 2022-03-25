@@ -1,0 +1,23 @@
+Given a non-negative integer x, compute and return the square root of x.
+
+Since the return type is an integer, the decimal digits are truncated, and only the integer part of the result is returned.
+
+Note: You are not allowed to use any built-in exponent function or operator, such as pow(x, 0.5) or x ** 0.5.
+-------------------------------------------------------------------------------------------
+class Solution {
+    public int mySqrt(int x) {
+        int lo, hi;
+        lo = 1;
+        hi = x;
+        while (lo <= hi) {
+            int mid = lo + ((hi - lo) >> 1);
+            if (mid == (x / mid)) return mid;
+            else if (mid < (x / mid)) lo = mid + 1;
+            else hi = mid - 1;
+        }
+        return hi;
+
+    }
+}
+
+思路很简单，注意乘法溢出，可以改用除法。
