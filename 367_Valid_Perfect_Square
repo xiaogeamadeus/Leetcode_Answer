@@ -1,0 +1,27 @@
+Given a positive integer num, write a function which returns True if num is a perfect square else False.
+
+Follow up: Do not use any built-in library function such as sqrt.
+
+------------------------------------------
+
+class Solution {
+    public boolean isPerfectSquare(int num) {
+        int lo, hi, res;
+        lo = 1;
+        hi = num;
+        res = 0;
+        while (lo <= hi) {
+            int mid = lo + ((hi - lo) >> 1);
+            if (mid == (num / mid)) {
+                res = mid;
+                break;
+            }
+            else if (mid < (num / mid)) lo = mid + 1;
+            else hi = mid - 1;
+        }
+        if (res * res == num) return true;
+        return false;
+    }
+}
+
+有点小坑，为了避免乘法超范围用了除法，但除法省略小数之后类似5这样的数就会出现问题。所以加了一个判别条件在代码最后。
