@@ -1,0 +1,22 @@
+Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+
+Note that you must do this in-place without making a copy of the array.
+
+-----------------------------------------------
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int fast, slow;
+        slow = 0;
+        for (fast = 0; fast < nums.length; fast++) {
+            if (nums[fast] != 0) {
+                nums[slow] = nums[fast];
+                slow++;
+            }
+        }
+        while (slow < nums.length) {
+            nums[slow] = 0;
+            slow++;
+        }
+    }
+}
+解答思路：首先先用快慢指针把所有非零的值放到前面，然后再用一个循环将之后的值全变成0就可以了。
