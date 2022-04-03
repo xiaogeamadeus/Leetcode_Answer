@@ -1,0 +1,69 @@
+Given two strings s and t of lengths m and n respectively, 
+return the minimum window substring of s such that every character in t (including duplicates) is included in the window. 
+
+If there is no such substring, return the empty string "".
+
+The testcases will be generated such that the answer is unique.
+
+A substring is a contiguous sequence of characters within the string.
+
+ --------------------------------------------------------------- 
+class Solution {
+        public String minWindow(String s, String t) {
+            // 如果t比s还长，直接返回空
+            if (s.length() < t.length()) {
+                return "";
+            }
+            // 构筑两个map：ht用来记录t中的元素与出现次数，hs用来记录s中的
+            Map<Character, Integer> hs =  new HashMap<>();
+            Map<Character, Integer> ht = new HashMap<>();
+            // 将t中的元素与出现的次数记录在hashmap中
+            for (char c: t.toCharArray()) {
+                ht.put(c, ht.getOrDefault(c, 0) + 1);
+            }
+            //左指针右指针的构筑
+            int left = 0;
+            int right = 0;
+            // 判断子串长度是否符合t（映射数量）
+            int valid = 0;
+            //子字符串的开始
+            int start = 0;
+            //子字符串的长度
+            int len = Integer.MAX_VALUE;
+            //右指针开始
+            while (right < s.length()) {
+                char c = s.charAt(right);
+                right++;
+                //如果右指针指向的值是t的某一个 计数/放入hs/valid++
+                if (ht.containsKey(c)) {
+                    hs.put(c, hs.getOrDefault(c, 0) + 1);
+                    //如果c字符的长度满足了ht中c字符的长度，合格的字符数valid+1
+                    //之所以用equal是因为Integer的长度限制
+                    if (hs.get(c).equals(ht.get(c))) {
+                        valid++;
+                    }
+                }
+                //当valid等于ht的size的时候，及该子串已经包含所有所需要的东西，需要开始进行左指针的移动。
+                //用while为了一直维持包含的关系
+                while (valid == ht.size()) {
+                    //给len赋值（最小值）
+                    if (right - left < len) {
+                        start = left;
+                        len = right - left;
+                    }
+                    char d = s.charAt(left);
+                    //左指针移动
+                    left++;
+                    //如果左指针导致子串数量不能满足t，valid-- 循环结束
+                    if (ht.containsKey(d)) {
+                        if (hs.get(d).equals(ht.get(d))) {
+                            valid--;
+                        }
+                        hs.put(d, hs.get(d) - 1);
+                    }
+                }
+            }
+            //如果len等于MaxValue，返回空（未查询到）。如果len不等于，则返回子串。
+            return len == Integer.MAX_VALUE ? "" : s.substring(start, start + len);
+    }
+ 
