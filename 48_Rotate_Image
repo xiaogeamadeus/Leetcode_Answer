@@ -1,0 +1,39 @@
+You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).
+
+You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. 
+DO NOT allocate another 2D matrix and do the rotation.
+--------------------------------------------
+
+思路：有的时候要躲开人的惯性思维。对于人优秀的方法对于计算机来说不一定优雅。
+本题思路很简单，直接将矩阵九十度旋转对于计算机来说稍显麻烦，我们可以将其拆解为几个步骤。
+首先，可以先将数组对角对称，然后再将每一行反转（左右指针）即可。
+
+
+class Solution {
+    public void rotate(int[][] matrix) {
+        //二维数组的length操作代表行数
+        //也可以用matrix[0].length 代表第一行的列数。
+        int n = matrix.length;
+        //按对角线镜像数组 (注意，第二个循环j中，要从i开始，否则相当于做了两次翻转等于没翻)
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                int a = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = a;
+            }
+        }
+        //对每一行进行反转操作
+        for (int i = 0; i < n; i++) {
+            int left = 0, right = n - 1;
+            while (left < right) {
+                int a = matrix[i][left];
+                matrix[i][left] = matrix[i][right];
+                matrix[i][right] = a;
+                left++;
+                right--;
+            }
+        }
+    }
+}
+
+空间复杂度O(1) 时间复杂度O(n^2)
