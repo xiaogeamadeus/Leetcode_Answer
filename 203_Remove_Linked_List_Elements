@@ -1,0 +1,39 @@
+Given the head of a linked list and an integer val, remove all the nodes of the linked list that has Node.val == val, 
+and return the new head.
+-------------------------------------------
+迭代写法
+时间复杂度 O(N)
+空间复杂度 O(1)
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        if (head == null) return head;
+        ListNode dummy = new ListNode(-1, head);
+        
+        ListNode temp = dummy;
+        while(temp.next != null) {
+            if (temp.next.val == val) {
+                temp.next = temp.next.next;
+            } else {
+                temp = temp.next;   
+            }
+        }
+        //之所以不返回head是因为head有可能自己也要被删除
+        return dummy.next;
+    }
+}
+----------------------------------------
+
+递归写法
+
+时间复杂度 O(n)
+空间复杂度 O(n)
+
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        if (head == null) return head;
+        
+        head.next = removeElements(head.next, val);
+
+        return head.val == val? head.next : head;
+    }
+}
