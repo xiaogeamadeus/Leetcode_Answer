@@ -1,0 +1,54 @@
+Given a positive integer n, generate an n x n matrix filled with elements from 1 to n2 in spiral order.
+
+----------------------------------------------------------------
+
+固定思维了
+1-n^2这么简单的数没必要非要用表来存 num++就行
+边界条件也可以简单的用num <= n^2来
+
+class Solution {
+    public int[][] generateMatrix(int n) {
+        //res的建立
+        int[][] res = new int[n][n];
+        //存数
+        int num = 1;
+
+
+        int upper = 0, lower = n-1, left = 0, right = n-1;
+        while (num <= n*n) {
+
+            if (upper <= lower) {
+                //顶端，从左到右
+                for (int i = left; i <= right; i++) {
+                    res[upper][i] = num++;
+                }
+                upper++;
+            }
+
+            if (left <= right) {
+                //右端，从上到下
+                for (int i = upper; i <= lower; i++) {
+                    res[i][right] = num++;
+                }
+                right--;
+            }
+
+            if (upper <= lower) {
+                //底端，从右到左
+                for (int i = right; i >= left; i--) {
+                    res[lower][i] = num++;
+                }
+                lower--;
+            }
+
+            if (left <= right) {
+                //左端，从下到上
+                for (int i = lower; i >= upper; i--) {
+                    res[i][left] = num++;
+                }
+                left++;
+            }
+        }
+        return res;
+    }
+}
