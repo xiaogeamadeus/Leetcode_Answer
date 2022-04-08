@@ -6,3 +6,65 @@ where adjacent cells are horizontally or vertically neighboring.
 The same letter cell may not be used more than once.
 ----------------------------------------------------------------
 
+class Solution {
+        //提供回答部分
+    public boolean exist(char[][] board, String word) {
+        int m = board[0].length;
+        int n = board.length;
+        //用于判定是否来过的数组
+        boolean[][] visited = new boolean[n][m];
+        //主体 通过用for循环遍历所有节点来寻找一个合适的开头并且继续进行下去
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                boolean flag = check(board, visited, i, j, word, 0);
+                //如果能找到一个正确单词就break并返回true
+                if(flag) return true;
+            }
+        }
+        //一个都没找到就false
+        return false;
+    }
+
+    //负责进行回溯并检查是否存在单词的子函数
+    private boolean check(char[][] board, boolean[][] visited, int i, int j, String s, int k) {
+        //中止条件判定
+        //如果ij所在的字母和我们现在想要check的字母不一样 直接false，换下一个ij
+        if (board[i][j] != s.charAt(k)) {
+            return false;
+            //如果k（check过的字母）的长度已经和word一样了，直接true
+        } else if (k == s.length() - 1) {
+            return true;
+            //如果不符合上述两个情况，则继续
+        } else {
+            //在visited数组中记录信息，true代表已经走过
+            visited[i][j] = true;
+            //directions数组代表我们希望让他走的方向，如果是前后左右都能走就是这样
+            //有其他地方可以走，一步跳两格等情况的话，可以通过修改这个数组实现
+            int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+            //给result数组重新赋值，以防上一个点的true带到这个点
+            boolean result = false;
+            //回溯的主要部分 foreach遍历整个directions数组（前后左右都试一下）
+            for (int[] dir :directions) {
+                //newi和newj代表前后左右的下一个点的坐标
+                int newi = i +dir[0], newj = j +dir [1];
+                //限制条件，如果newinewj出了m*n的表格，则不需要任何改变，result就false
+                if (newi >= 0 && newi < board.length && newj >= 0 && newj < board[0].length) {
+                    //如果这个点走过了，也不需要进行下列判断
+                    if (!visited[newi][newj]) {
+                        //回溯的递归操作
+                        boolean flag = check(board, visited, newi, newj, s, k+1);
+                        //若flag能够为true，代表newinewj这个点就是最后一个正确的点，可以跳出循环了
+                        if (flag) {
+                            result = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            //撤销标记 进行回溯
+            visited[i][j] = false;
+            //回到主函数
+            return result;
+        }
+    }
+}
