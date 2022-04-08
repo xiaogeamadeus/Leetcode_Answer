@@ -1,0 +1,26 @@
+Given two integers n and k, return all possible combinations of k numbers out of the range [1, n].
+
+You may return the answer in any order.
+
+
+-------------------------------------------
+class Solution {
+        List<List<Integer>> result = new ArrayList<>();
+        LinkedList<Integer> path = new LinkedList<>();
+    public List<List<Integer>> combine(int n, int k) {
+        combinehelper(n, k, 1);
+        return result;
+    }
+    private void combinehelper(int n, int k, int startIndex) {
+        if (path.size() == k) {
+            result.add(new ArrayList<>(path));
+            return;
+        }
+
+        for (int i = startIndex; i <= n - (k - path.size()) + 1; i++) {
+            path.add(i);
+            combinehelper(n, k, i + 1);
+            path.removeLast();
+        }
+    }
+}
