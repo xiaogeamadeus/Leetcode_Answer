@@ -1,5 +1,8 @@
 Given two integer arrays nums1 and nums2, return the maximum length of a subarray that appears in both arrays.
 ------------------------------------------------------------
+三种主要方法：动态规划，暴力，滑动窗口
+我都没太看懂
+
 class Solution {
     public int findLength(int[] nums1, int[] nums2) {
         return nums1.length < nums2.length ? findMax(nums1, nums2) : findMax(nums2, nums1);
