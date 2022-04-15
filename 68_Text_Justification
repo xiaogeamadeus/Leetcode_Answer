@@ -1,0 +1,85 @@
+给定一个单词数组 words 和一个长度 maxWidth ，重新排版单词，使其成为每行恰好有 maxWidth 个字符，且左右两端对齐的文本。
+
+你应该使用 “贪心算法” 来放置给定的单词；也就是说，尽可能多地往每行中放置单词。必要时可用空格 ' ' 填充，使得每行恰好有 maxWidth 个字符。
+
+要求尽可能均匀分配单词间的空格数量。如果某一行单词间的空格不能均匀分配，则左侧放置的空格数要多于右侧的空格数。
+
+文本的最后一行应为左对齐，且单词之间不插入额外的空格。
+
+注意:
+
+单词是指由非空格字符组成的字符序列。
+每个单词的长度大于 0，小于等于 maxWidth。
+输入单词数组 words 至少包含一个单词。
+
+-----------------------------------------------------------------
+这个题最主要的是要做到分类讨论
+1. 最后一行的情况：最后一行我们只需要单词左对齐+单词之间有空格，行末填充既可。
+2. 这行只有一个单词的情况下，我们需要将单词左对齐，然后在行末填充剩余空格。
+3. 其他情况。
+
+我们可以用一个大的循环将所有的情况放在这个循环里。每一轮循环是一行，往ans表中存一个字符串。
+
+
+class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> ans = new ArrayList<>();
+        int right = 0, n = words.length;
+        while (true) {
+            int left = right;
+            int sumLen = 0;
+            
+            // 循环统计当前行能放多少单词，单词之间至少要有一个空格。
+            while (right < n && sumLen + words[right].length() + right - left <= maxWidth) {
+                sumLen += words[right++].length();
+            }
+            
+            // 当前行是最后一行，单词左对齐，且单词之间应该只有一个空格，在行末填充剩余空格
+            if (right == n) {
+                StringBuffer sb = join(words, left, n, " ");
+                sb.append(blank(maxWidth - sb.length()));
+                ans.add(sb.toString());
+                return ans;
+            }
+
+            int numWords = right - left;
+            int numSpaces = maxWidth - sumLen;
+
+            // 当前行只有一个单词，该单词左对齐，在行末填充剩余空格
+            if (numWords == 1) {
+                StringBuffer sb = new StringBuffer(words[left]);
+                sb.append(blank(numSpaces));
+                ans.add(sb.toString());
+                continue;
+            }
+
+            // 当前行不止一个单词
+            int avgSpace = numSpaces / (numWords - 1);
+            int extraSpaces = numSpaces % (numWords - 1);
+            StringBuffer sb = new StringBuffer();
+            // 拼接额外加一个空格的单词
+            sb.append(join(words, left, left + extraSpaces + 1, blank(avgSpace + 1)));
+            sb.append(blank(avgSpace));
+            // 拼接其余单词
+            sb.append(join(words, left + extraSpaces + 1, right, blank(avgSpace)));
+            ans.add(sb.toString());
+        }
+    }
+
+    public String blank(int n) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < n; i++) {
+            sb.append(' ');
+        }
+        return sb.toString();
+    }
+
+    public StringBuffer join(String[] words, int left, int right, String sep) {
+        StringBuffer sb = new StringBuffer(words[left]);
+        for (int i = left + 1; i < right; i++) {
+            sb.append(sep);
+            sb.append(words[i]);
+        }
+        return sb;
+    }
+}
