@@ -1,2 +1,42 @@
 Given two integer arrays nums1 and nums2, return the maximum length of a subarray that appears in both arrays.
 ------------------------------------------------------------
+class Solution {
+    public int findLength(int[] nums1, int[] nums2) {
+        return nums1.length < nums2.length ? findMax(nums1, nums2) : findMax(nums2, nums1);
+    }
+
+    private int findMax(int [] A, int[] B) {
+        int m = A.length, n = B.length;
+        int max = 0;
+
+        for (int len = 1; len < m; len++) {
+            max = Math.max(max, find(A, B, 0, n - len, len));
+        }
+
+        for (int j = n - m; j >= 0; j--) {
+            max = Math.max(max, find(A, B, 0, j, m));
+        }
+
+        for (int len = m - 1; len > 0; len--) {
+            max = Math.max(max, find(A, B, m - len, 0, len));
+        }
+
+        return max;
+    }
+
+    private int find(int[] A, int[] B, int i, int j, int len) {
+        int max = 0, count = 0;
+        for (int k = 0; k < len; k++) {
+            if (A[i + k] == B[j + k]) {
+                count++;
+            } else {
+                max = Math.max(max, count);
+                count = 0;
+            }
+        }
+
+        return Math.max(max, count);
+    }
+
+
+}
