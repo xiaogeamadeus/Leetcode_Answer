@@ -1,0 +1,38 @@
+Given a string array words, return an array of all characters that show up in all strings within the words (including duplicates). 
+You may return the answer in any order.
+
+---------------------------------------
+
+class Solution {
+    public List<String> commonChars(String[] words) {
+        List<String> result = new ArrayList<>();
+        if(words.length == 0) return result;
+        int[] res = new int[26];
+        // Initialize the array res
+        for(int i = 0; i < words[0].length(); i++) {
+            res[words[0].charAt(i) - 'a']++;
+        }
+
+        //Use array to record the alphabet of words
+        for (String i : words) {
+            int[] hs = new int[26];
+            for(int j = 0; j < i.length() ;j++) {
+                hs[i.charAt(j) - 'a']++;
+            }
+
+            for(int k = 0; k < i.length(); k++) {
+                res[k] = Math.min(hs[k], res[k]);
+            }
+        }
+
+        // Judge and get the result
+        for(int i = 0; i < 26; i++) {
+            while (res[i] > 0) {
+                char c = (char)(i+'a');
+                result.add(String.valueOf(c));
+                res[i]--;
+            }
+        }
+        return result;
+    }
+}
