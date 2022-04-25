@@ -1,0 +1,47 @@
+Given an integer array nums, 
+return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, 
+and nums[i] + nums[j] + nums[k] == 0.
+
+Notice that the solution set must not contain duplicate triplets.
+-------------------------------------------------------
+这题不适合哈希表，很多细节需要处理 思路大概是先用两重for进行存和，然后判断0-和是否在数组中出现。这样会出现多个重复结果，需要进行剪枝。
+就算使用哈希表，时间复杂度也会在O(n^2)，使用arrays.sort的时间复杂度大概在O(nlogn)，所以可以使用。
+将nums排序后利用双指针就可以避免出现多个重复结果，不需要进行剪枝
+
+
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(nums);
+
+        for(int i = 0; i<nums.length; i++) {
+            if(nums[i] > 0) {
+                return res;
+            }
+
+            if(i>0 && nums[i] == nums[i-1]) {
+                continue;
+            }
+
+            int left = i + 1;
+            int right = nums.length - 1;
+            while(right > left) {
+                int sum = nums[i] + nums[left]+ nums[right];
+                if(sum > 0) {
+                    right--;
+                }else if (sum < 0) {
+                    left++;
+                }else {
+                    res.add(Arrays.asList(nums[i], nums[left], nums[right]));
+
+                    while (right > left && nums[right] == nums[right - 1]) right--;
+                    while (right > left && nums[left] == nums[left + 1]) left++;
+
+                    right--;
+                    left++;
+                }
+            }
+        }
+        return res;
+    }
+}
