@@ -1,0 +1,56 @@
+Given two strings ransomNote and magazine, 
+return true if ransomNote can be constructed from magazine and false otherwise.
+
+Each letter in magazine can only be used once in ransomNote.
+-----------------------------------------------------
+
+先存到map 再验证
+感觉不是最优解 时间复杂度O(m+n) 空间复杂度O(n)（n是magazine长度）
+
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        if (ransomNote.length() > magazine.length()) return false;
+
+        Map<Character, Integer> hs = new HashMap<>();
+
+        for (int i = 0; i < magazine.length(); i++ ) {
+            hs.put(magazine.charAt(i), hs.getOrDefault(magazine.charAt(i), 0)+1);
+        }
+
+        for (int i = 0; i < ransomNote.length(); i++) {
+            if(hs.containsKey(ransomNote.charAt(i))) {
+                if (hs.get(ransomNote.charAt(i))>0) {
+                    hs.put(ransomNote.charAt(i), hs.get(ransomNote.charAt(i))-1);
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+看了一下豁然开朗，因为是字母 所以完全可以用26数组，会比map快很多 map有很多红黑树之类的操作。
+
+
+class Solution {
+        public boolean canConstruct(String ransomNote, String magazine) {
+            if (ransomNote.length() > magazine.length()) return false;
+            int[] a = new int[26];
+
+            for (int i = 0; i < magazine.length(); i++) {
+                a[magazine.charAt(i) - 'a']++;
+            }
+
+            for (int i = 0; i < ransomNote.length(); i++) {
+                if (a[ransomNote.charAt(i) - 'a'] <= 0) {
+                    return false;
+                } else {
+                    a[ransomNote.charAt(i) - 'a']--;
+                }
+            }
+            return true;
+        }
+    }
