@@ -1,0 +1,32 @@
+Given four integer arrays nums1, nums2, nums3, and nums4 all of length n, 
+return the number of tuples (i, j, k, l) such that:
+
+0 <= i, j, k, l < n
+nums1[i] + nums2[j] + nums3[k] + nums4[l] == 0
+
+----------------------------------------------------------------
+分治法，两个两个来。
+为了处理和重复出现的情况，选择哈希map key是和的值， value是次数。这样就可以处理了。
+
+
+class Solution {
+    public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
+        Map<Integer, Integer> hs1 = new HashMap<>();
+        int n = nums1.length;
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                hs1.put(nums1[i] + nums2[j], hs1.getOrDefault(nums1[i] + nums2[j], 0)+1);
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if(hs1.containsKey(0 - nums3[i] - nums4[j])){
+                    res += hs1.get(0 - nums3[i] - nums4[j]);
+                }
+            }
+        }
+        return res;
+    }
+}
