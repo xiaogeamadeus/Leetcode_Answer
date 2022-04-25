@@ -1,0 +1,29 @@
+Given an array of integers nums and an integer target, 
+return indices of the two numbers such that they add up to target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+You can return the answer in any order.
+------------------------------------
+
+因为这个题不仅要判断值，还要返回值的下标。
+所以set不行 还得用map。
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int[] res = new int[2];
+        if (nums == null || nums.length == 0) {
+            return res;
+        }
+        Map<Integer, Integer> hs = new HashMap<>();
+        for(int i = 0; i < nums.length ; i++) {
+            int a = target - nums[i];
+            if(hs.containsKey(a)) {
+                res[0] = hs.get(a);
+                res[1] = i;
+            } 
+            hs.put(nums[i], i);
+        }
+        return res;
+    }
+}
