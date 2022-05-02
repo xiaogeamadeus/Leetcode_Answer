@@ -1,0 +1,19 @@
+Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
+
+-------------------------------------------------------------------
+比较慢的解法 O(n^2)自己想出来的 还可以优化。
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        int[] B = new int[nums.length+1];
+        for(int i = 1; i < B.length; i++){
+            B[i] = B[i-1] + nums[i-1];
+        }
+        int count = 0;
+        for (int i = 0; i < B.length - 1; i++) {
+            for(int j = i; j < B.length - 1; j++) {
+                if (B[j+1] - B[i] == k) count++;
+            }
+        }
+        return count;
+    }
+}
