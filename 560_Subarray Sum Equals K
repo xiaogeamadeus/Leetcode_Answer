@@ -17,3 +17,21 @@ class Solution {
         return count;
     }
 }
+
+哈希表记录k-其中一个数 然后查找 两数之和+前缀和捏。
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        int n = nums.length;
+        Map<Integer, Integer> hs = new HashMap<>();
+        hs.put(0,1);
+
+        int count = 0, a = 0;
+        for(int i = 1; i < n+1; i++) {
+            a += nums[i-1];
+            int b = a - k;
+            if (hs.containsKey(b)) count += hs.get(b);
+            hs.put(a, hs.getOrDefault(a, 0)+1);
+        }
+        return count;
+    }
+}
