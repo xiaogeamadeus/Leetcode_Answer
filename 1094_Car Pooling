@@ -7,6 +7,32 @@ The locations are given as the number of kilometers due east from the car's init
 Return true if it is possible to pick up and drop off all passengers for all the given trips, or false otherwise.
 
 -----------------------------------------------------------------------
+差分数组，经典题型，注意题目边界条件，同时注意这个模版可能会考虑不到diff[0]的情况。
+
+class Solution {
+    public boolean carPooling(int[][] trips, int capacity) {
+        int m = 1001;
+        int[] diff = new int[m];
+        for(int[] trip : trips){
+            diff[trip[1]] += trip[0];
+            if(diff[trip[2]] < m) {
+                diff[trip[2]] -= trip[0];
+            }
+        }
+        int[] res = new int[m];
+        if(diff[0] > capacity) return false;
+        res[0] = diff[0];
+        for(int i = 1; i < m; i++) {
+            res[i] = res[i-1] + diff[i];
+            if (res[i] > capacity) {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+}
 
 
 
