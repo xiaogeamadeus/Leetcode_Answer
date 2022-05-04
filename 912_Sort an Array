@@ -1,0 +1,115 @@
+Given an array of integers nums, sort the array in ascending order.
+
+-----------------------------------------
+快速排序方法：
+class Solution {
+        // quick sort
+    public int[] sortArray(int[] nums) {
+        shuffle(nums);
+        sort(nums, 0, nums.length-1);
+        return nums;
+    }
+
+    public void sort(int[] nums, int lo, int hi){
+        if(lo >= hi) {
+            return;
+        }
+        int p = partition(nums, lo, hi);
+        sort(nums, lo, p-1);
+        sort(nums, p+1, hi);
+    }
+
+    public int partition(int[] nums, int lo, int hi) {
+        int p = nums[lo];
+
+        int i = lo + 1, j = hi;
+
+        while(i <= j) {
+            while(i<hi && nums[i] <= p) {
+                i++;
+            }
+            while(j>lo && nums[j] > p){
+                j--;
+            }
+            if (i>=j) {
+               break;
+            }
+            swap(nums, i, j);
+        }
+        swap(nums, lo ,j);
+        return j;
+    }
+
+    public void shuffle(int[] nums){
+        Random rand = new Random();
+        int n = nums.length;
+
+        for (int i = 0 ; i<n; i++){
+            int r = i + rand.nextInt(n - i);
+            swap(nums, i , r);
+        }
+    }
+
+    public void swap(int[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+        }
+}
+
+
+
+
+class Solution {
+        // merge sort
+        // 用于辅助合并有序数组。
+        private int[] temp;
+    public int[] sortArray(int[] nums) {
+        temp = new int[nums.length];
+        sort(nums, 0, nums.length - 1);
+        return nums;
+    }
+
+    public void sort(int[] nums, int lo, int hi){
+        if(lo == hi) {
+            return;
+        }
+        //防止溢出
+        int mid = lo + (hi - lo)/2;
+
+        //左半数组排序
+        sort(nums, lo, mid);
+
+        //右半数组排序
+        sort(nums, mid+1, hi);
+
+        //合并两部分数组
+        merge(nums, lo, mid, hi);
+    }
+
+
+    public void merge(int[] nums, int lo, int mid, int hi){
+        // 先把nums[lo..hi]的元素复制到辅助数组中
+        // 以便合并后的结果能够直接存入nums
+        for(int i = lo; i <= hi; i++) {
+            temp[i] = nums[i];
+        }
+
+        // 数组双指针技巧，合并两个有序数组
+        int i = lo, j = mid + 1;
+        for (int p = lo; p <= hi; p++) {
+            if(i == mid + 1) {
+                nums[p] = temp[j++];
+            } else if (j == hi + 1) {
+                nums[p] = temp[i++];
+            } else if (temp[i] > temp[j]) {
+                nums[p] = temp[j++];
+            } else {
+                nums[p] = temp[i++];
+            }
+        }
+
+
+    }
+
+}
