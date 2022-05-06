@@ -1,0 +1,58 @@
+请实现一个函数，把字符串 s 中的每个空格替换成"%20"。
+
+----------------------------------
+方法一 建立一个stringbuffer 然后将s中的东西复制过去，需要额外空间。
+class Solution {
+    public String replaceSpace(String s) {
+        if(s == null) {
+            return null;
+        }
+
+        StringBuffer sb = new StringBuffer();
+        for(int i = 0; i<s.length(); i++) {
+            if(s.charAt(i) == ' '){
+                sb.append("%20");
+            } else {
+                sb.append(s.charAt(i));
+            }
+        }
+        return sb.toString();
+    }
+}
+
+----------------
+方法2 双指针 先填充多余空间 然后再双指针从后往前。
+注ch[r--]为先处理ch[r]，然后r--；
+class Solution {
+    public String replaceSpace(String s) {
+        if(s == null || s.length() == 0) {
+            return null;
+        }
+
+        StringBuffer sb = new StringBuffer();
+        // enlarge the string;
+        for(int i = 0; i<s.length(); i++) {
+            if(s.charAt(i) == ' ') {
+                sb.append("  ");
+            }
+        }
+        if(sb.length() == 0) return s;
+
+        int l = s.length() - 1;
+        s += sb.toString();
+        int r = s.length() - 1;
+        char[] ch = s.toCharArray();
+        while (l >= 0) {
+            if(ch[l] == ' ') {
+                ch[r--] = '0';
+                ch[r--] = '2';
+                ch[r] = '%';
+            }else {
+                ch[r] = ch[l];
+            }
+            l--;
+            r--;
+        }
+        return new String(ch);
+    }
+}
