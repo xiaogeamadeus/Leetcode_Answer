@@ -1,0 +1,67 @@
+Given an input string s, reverse the order of the words.
+
+A word is defined as a sequence of non-space characters. The words in s will be separated by at least one space.
+
+Return a string of the words in reverse order concatenated by a single space.
+
+Note that s may contain leading or trailing spaces or multiple spaces between two words. 
+The returned string should only have a single space separating the words. Do not include any extra spaces.
+--------------------------------------------------------------------
+不使用split的情况
+
+
+
+class Solution {
+        /*不使用java内置方法;
+        1. 去除首尾和中间多余空格;
+        2. 反转整个字符串;
+        3. 反转各个单词;
+        */
+    public String reverseWords(String s) {
+        StringBuffer sb = removeSpace(s);
+
+        reverseString(sb, 0, sb.length()-1);
+        reverseEachWord(sb);
+        return sb.toString();
+    }
+
+    private StringBuffer removeSpace(String s){
+        int l = 0;
+        int r = s.length() - 1;
+        while(s.charAt(l) == ' ') l++;
+        while(s.charAt(r) == ' ') r--;
+        StringBuffer sb = new StringBuffer();
+        while(l <= r) {
+            char c = s.charAt(l);
+            if(c != ' ' || sb.charAt(sb.length() - 1) != ' ') {
+                sb.append(c);
+            }
+            l++;
+        }
+        return sb;
+    }
+
+    private void reverseString(StringBuffer sb, int l, int r) {
+        while(l < r) {
+            char temp = sb.charAt(l);
+            sb.setCharAt(l, sb.charAt(r));
+            sb.setCharAt(r, temp);
+            l++;
+            r--;
+        }
+    }
+
+    private void reverseEachWord(StringBuffer sb) {
+        int l = 0;
+        int r = 1;
+        int n = sb.length();
+        while (l < n) {
+            while (r < n && sb.charAt(r) != ' ') {
+                r++;
+            }
+            reverseString(sb, l, r-1);
+            l = r+1;
+            r = l+1;
+        }
+    }
+}
