@@ -15,6 +15,7 @@ Depending on your language, the queue may not be supported natively.
 You may simulate a queue using a list or deque (double-ended queue) 
 as long as you use only a queue's standard operations.
 ---------------------------------------------
+用一个队列实现的方法。
 class MyStack {
         private Queue<Integer> q;
         private int top_elem;
@@ -47,3 +48,39 @@ class MyStack {
         return q.isEmpty();
     }
 }
+
+
+---------------------------------
+两个队列的解决方法
+空间复杂度不如一个队列
+class MyStack {
+       Queue<Integer> queue1, queue2;
+    public MyStack() {
+        queue1 = new LinkedList<>();
+        queue2 = new LinkedList<>();
+    }
+    
+    public void push(int x) {
+        queue2.offer(x);
+        while(!queue1.isEmpty()) {
+            queue2.offer(queue1.poll());
+        }
+        Queue<Integer> queueTemp;
+        queueTemp = queue1;
+        queue1 = queue2;
+        queue2 = queueTemp;
+    }
+    
+    public int pop() {
+        return queue1.poll();
+    }
+    
+    public int top() {
+        return queue1.peek();
+    }
+    
+    public boolean empty() {
+        return queue1.isEmpty();
+    }
+}
+
