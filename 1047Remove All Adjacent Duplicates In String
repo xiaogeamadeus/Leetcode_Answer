@@ -1,0 +1,32 @@
+You are given a string s consisting of lowercase English letters. 
+A duplicate removal consists of choosing two adjacent and equal letters and removing them.
+
+We repeatedly make duplicate removals on s until we no longer can.
+
+Return the final string after all such duplicate removals have been made.
+It can be proven that the answer is unique.
+
+-------------------------------------------------------
+class Solution {
+    public String removeDuplicates(String s) {
+        Stack<Character> st = new Stack<>();
+        for(char c : s.toCharArray()) {
+            if (st.isEmpty()) {
+                st.push(c);
+                continue;
+            }
+            char temp = st.peek();
+            if(c == temp) {
+                st.pop();
+            } else {
+                st.push(c);
+            }
+        }
+        String res = "";
+        if(st.isEmpty()) return res;
+        while(!st.isEmpty()) {
+            res = st.pop() + res;
+        }
+        return res;
+    }
+}
