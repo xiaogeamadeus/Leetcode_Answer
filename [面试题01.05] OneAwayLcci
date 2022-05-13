@@ -1,0 +1,58 @@
+There are three types of edits that can be performed on strings: 
+insert a character, remove a character, or replace a character.
+Given two strings, write a function to check if they are one edit (or zero edits) away.
+
+-----------------------------
+
+class Solution {
+    public boolean oneEditAway(String first, String second) {
+        int n = first.length();
+        int m = second.length();
+        if(Math.abs(n-m)>1) {
+            return false;
+        }
+
+        int count = 0;
+
+        if (n == m) {
+            for(int i = 0; i<n; i++) {
+                if(first.charAt(i) != second.charAt(i)) {
+                    count++;
+                    if(count > 1) {
+                        return false;
+                    }
+                }
+            }
+        } else {
+            int p1 = 0, p2 = 0;
+            if (n>m) {
+                while (p2<m){
+                    if(first.charAt(p1) != second.charAt(p2)){
+                        p1++;
+                        count++;
+                        if(count > 1){
+                            return false;
+                        }
+                    } else {
+                        p1++;
+                        p2++;
+                    }
+                }
+            } else {
+                while (p2<n){
+                    if(first.charAt(p2) != second.charAt(p1)){
+                        p1++;
+                        count++;
+                        if(count > 1){
+                            return false;
+                        }
+                    } else {
+                        p1++;
+                        p2++;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+}
