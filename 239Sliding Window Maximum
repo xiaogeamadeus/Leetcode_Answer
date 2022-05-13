@@ -1,0 +1,53 @@
+You are given an array of integers nums, 
+there is a sliding window of size k which is moving from the very left of the array to the very right. 
+You can only see the k numbers in the window. Each time the sliding window moves right by one position.
+
+Return the max sliding window.
+
+
+-------------------------------------------------------
+本方法构建了一个叫做“单调队列”的数据结构，能够自动将队列中的元素按照递增顺序排列。并且以O(1)的时间复杂度取最大值。
+这个数据结构专门用来解决滑动窗口比大小此类问题。
+
+
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        MonotonicQueue window = new MonotonicQueue();
+        List<Integer> res = new ArrayList<>();
+
+        for(int i = 0; i<nums.length; i++) {
+            if (i<k-1) {
+                window.push(nums[i]);
+            } else {
+                window.push(nums[i]);
+                res.add(window.max());
+                window.pop(nums[i-k+1]);
+            }
+        }
+        int[] arr = new int[res.size()];
+        for(int i = 0; i<arr.length; i++) {
+            arr[i] = res.get(i);
+        }
+        return arr;
+    }
+}
+
+class MonotonicQueue {
+        private LinkedList<Integer> maxq = new LinkedList<>();
+
+        public void push(int n) {
+            while (!maxq.isEmpty() && maxq.getLast() < n) {
+                maxq.pollLast();
+            }
+            maxq.addLast(n);
+        }
+        public int max() {
+            return maxq.getFirst();
+        }
+
+        public void pop(int n) {
+            if(n == maxq.getFirst()) {
+                maxq.pollFirst();
+            }
+        }
+}
