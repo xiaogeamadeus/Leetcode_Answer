@@ -1,0 +1,25 @@
+Write an algorithm to find the "next" node (i.e., in-order successor) of a given node in a binary search tree.
+
+Return null if there's no "next" node for the given node.
+
+-----------------------------------------------------
+这种方法时间复杂度肯定不对，按理来说只要中序遍历到p.next就可以结束了
+class Solution {
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        List<TreeNode> list = new ArrayList<>();
+        traverse(root, list);
+        for(int i = 0; i<list.size(); i++){
+            if(i < list.size() - 1 && p == list.get(i)) {
+                TreeNode res = list.get(i+1);
+                return res;
+            }
+        }
+        return null;
+    }
+    public void traverse(TreeNode root, List<TreeNode> list) {
+        if(root == null) return;
+        traverse(root.left, list);
+        list.add(root);
+        traverse(root.right, list);
+    }
+}
